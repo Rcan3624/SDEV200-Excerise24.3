@@ -234,12 +234,13 @@ public class MyLinkedList<E> implements MyList<E> {
     }
   }
   
-  private static class Node<E> {
+  public class Node<E> {
     E element;
     Node<E> next;
+    Node<E> previous;
 
-    public Node(E element) {
-      this.element = element;
+    public Node(E e) {
+      element = e;
     }
   }
   
