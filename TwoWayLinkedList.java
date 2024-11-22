@@ -1,110 +1,186 @@
-import java.util.Collection;
 import java.util.Iterator;
-import java.util.Spliterator;
-import java.util.function.Consumer;
-import java.util.function.IntFunction;
-import java.util.function.Predicate;
-import java.util.stream.Stream;
+import java.util.ListIterator;
+import java.util.NoSuchElementException;
 
-public class TwoWayLinkedList implements MyList {
+public class TwoWayLinkedList<E> implements MyList<E> {
+    private Node head, tail;
+    private int size = 0; // Number of elements in the list
 
-    public void add(int index, Object o) {
+    @Override
+    public void add(int index, E e) {
 
     }
 
-    public Object get(int index) {
+    @Override
+    public E get(int index) {
         return null;
     }
 
+    @Override
     public int indexOf(Object e) {
         return 0;
     }
 
-    public int lastIndexOf(Object o) {
+    @Override
+    public int lastIndexOf(E e) {
         return 0;
     }
 
-    public Object remove(int index) {
+    @Override
+    public E remove(int index) {
         return null;
     }
 
-    public Object set(int index, Object o) {
+    @Override
+    public E set(int index, E e) {
         return null;
     }
 
-    public boolean add(Object o) {
-        return MyList.super.add(o);
+    // Inner Node class with both next and previous pointers
+    private static class Node<E> {
+        E element;
+        Node<E> next;
+        Node<E> previous;
+
+        public Node(E e) {
+            element = e;
+        }
     }
 
-    public boolean isEmpty() {
-        return MyList.super.isEmpty();
+    // Constructor to create an empty list
+    public TwoWayLinkedList() {
     }
 
-    public boolean remove(Object e) {
-        return MyList.super.remove(e);
+    // Constructor to create a list from an array of objects
+    public TwoWayLinkedList(E[] objects) {
+        for (int i = 0; i < objects.length; i++) {
+            add(objects[i]);
+        }
     }
 
-    public boolean containsAll(Collection c) {
-        return MyList.super.containsAll(c);
-    }
+    // Other methods (getFirst, getLast, addFirst, addLast, removeFirst, removeLast, remove, clear, contains, get, indexOf, lastIndexOf, set, iterator) remain the same as in MyLinkedList.
 
-    public boolean addAll(Collection c) {
-        return MyList.super.addAll(c);
-    }
-
-    public boolean removeIf(Predicate filter) {
-        return MyList.super.removeIf(filter);
-    }
-
-    public Object[] toArray() {
-        return MyList.super.toArray();
-    }
-
-    public Object[] toArray(IntFunction generator) {
-        return MyList.super.toArray(generator);
-    }
-
-    public Object[] toArray(Object[] array) {
-        return MyList.super.toArray(array);
-    }
-
-    public boolean retainAll(Collection c) {
-        return MyList.super.retainAll(c);
-    }
-
-    public boolean removeAll(Collection c) {
-        return MyList.super.removeAll(c);
-    }
-
+    // Return the number of elements in this list
+    @Override
     public int size() {
-        return 0;
+        return size;
     }
 
+    @Override
     public boolean contains(Object o) {
         return false;
     }
 
-    public Iterator iterator() {
+    @Override
+    public Iterator<E> iterator() {
         return null;
     }
 
-    public void forEach(Consumer action) {
-        MyList.super.forEach(action);
-    }
-
+    @Override
     public void clear() {
 
     }
 
-    public Spliterator spliterator() {
-        return MyList.super.spliterator();
+    // Implement the listIterator() method
+    @Override
+    public ListIterator<E> listIterator() {
+        return new TwoWayLinkedListIterator(0);
     }
 
-    public Stream stream() {
-        return MyList.super.stream();
+    // Implement the listIterator(int index) method
+    @Override
+    public ListIterator<E> listIterator(int index) {
+        if (index < 0 || index > size) {
+            throw new IndexOutOfBoundsException("Index: " + index + ", Size: " + size);
+        }
+        return new TwoWayLinkedListIterator(index);
     }
 
-    public Stream parallelStream() {
-        return MyList.super.parallelStream();
+    // Inner class for ListIterator
+    private class TwoWayLinkedListIterator implements ListIterator<E> {
+        private Node<E> nextItem;
+        private int nextIndex;
+
+        public TwoWayLinkedListIterator(int index) {
+            if (index < size / 2) {
+                nextItem = head;
+                nextIndex = 0;
+                while (nextIndex < index) {
+                    nextItem = nextItem.next;
+                    nextIndex++;
+                }
+            } else {
+                nextItem = tail;
+                nextIndex = size - 1;
+                while (nextIndex > index) {
+                    nextItem = nextItem.previous;
+                    nextIndex--;
+                }
+            }
+        }
+
+        @Override
+        public boolean hasNext() {
+            return nextIndex < size;
+        }
+
+        @Override
+        public E next() {
+            if (!hasNext()) {
+                throw new NoSuchElementException();
+            }
+            E result = nextItem.element;
+            nextItem = nextItem.next;
+            nextIndex++;
+            return result;
+        }
+
+        @Override
+        public boolean hasPrevious() {
+            return false;
+        }
+
+        @Override
+        public E previous() {
+            return null;
+        }
+
+        @Override
+        public int nextIndex() {
+            return 0;
+        }
+
+        @Override
+        public int previousIndex() {
+            return 0;
+        }
+
+        @Override
+        public void remove() {
+
+        }
+
+        @Override
+        public void set(E e) {
+
+        }
+
+        @Override
+        public void add(E e) {
+
+        }
+    }
+
+    public static void main(String[] args) {
+        TwoWayLinkedList<Integer> list = new TwoWayLinkedList<>();
+        list.add(1);
+        list.add(2);
+        list.add(3);
+
+        // Using listIterator to iterate through the list
+        ListIterator<Integer> iterator = list.listIterator();
+        while (iterator.hasNext()) {
+            System.out.println(iterator.next());
+        }
     }
 }

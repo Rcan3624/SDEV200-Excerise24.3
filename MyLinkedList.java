@@ -1,3 +1,5 @@
+import java.util.ListIterator;
+
 public class MyLinkedList<E> implements MyList<E> {
   private Node<E> head, tail;
   private int size = 0; // Number of elements in the list
@@ -204,6 +206,16 @@ public class MyLinkedList<E> implements MyList<E> {
    *  in this list with the specified element. */
   public E set(int index, E e) {
     // Left as an exercise
+    return null;
+  }
+
+  @Override
+  public ListIterator<E> listIterator() {
+    return null;
+  }
+
+  @Override
+  public ListIterator<E> listIterator(int index) {
     return null;
   }
 

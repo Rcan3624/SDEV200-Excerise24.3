@@ -1,4 +1,5 @@
 import java.util.Collection;
+import java.util.ListIterator;
 
 public interface MyList<E> extends Collection<E> {
   /** Add a new element at the specified index in this list */
@@ -82,4 +83,10 @@ public interface MyList<E> extends Collection<E> {
     // Left as an exercise
     return null;
   }
+
+  // Implement the listIterator() method
+  ListIterator<E> listIterator();
+
+  // Implement the listIterator(int index) method
+  ListIterator<E> listIterator(int index);
 }
