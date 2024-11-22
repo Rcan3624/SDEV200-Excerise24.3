@@ -2,6 +2,9 @@ import java.util.Iterator;
 import java.util.ListIterator;
 import java.util.NoSuchElementException;
 
+
+/* I have no idea why this doesn't work properly and at this rate, I'm giving up for now to focus on my other assignments.
+ I swear some of these concepts take more than 8-weeks to properly learn. At least I tried :/    */
 public class TwoWayLinkedList<E> implements MyList<E> {
     private Node head, tail;
     private int size = 0; // Number of elements in the list
